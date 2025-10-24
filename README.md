@@ -1,276 +1,149 @@
 <div align="center">
+🛒 Smart Product Pricing Challenge
+Multimodal Regression for E-commerce Price Prediction
 
-# 🛒 Smart Product Pricing Challenge
-## ML Solution for E-commerce Price Prediction
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![SMAPE](https://img.shields.io/badge/SMAPE-56.2-red.svg)](https://github.com)
-[![Status](https://img.shields.io/badge/Status-Completed-brightgreen.svg)](https://github.com)
 
-*Predicting optimal product prices using advanced NLP and ensemble machine learning*
 
-</div>
 
----
 
-## 🎯 Project Overview
 
-This project presents a state-of-the-art machine learning solution for the **Smart Product Pricing Challenge**, where the goal is to predict optimal product prices based on product details including text descriptions and specifications. 
 
-<div align="center">
-
-### 🏆 **Best Performance: 56.2 SMAPE**
-
-*Using E5 embeddings with advanced ensemble methods*
+Predicting optimal e-commerce product prices using text, vision, and multimodal fusion models.
 
 </div>
+🎯 Project Overview
 
-## 📊 Challenge Details
+This project presents a multimodal machine learning pipeline for predicting optimal product prices from product descriptions, specifications, and (optionally) image data.
 
-| **Aspect** | **Details** |
-|------------|-------------|
-| 🎯 **Problem** | Predict product prices from catalog content (title, description, IPQ) |
-| 📈 **Dataset** | 75K training samples, 75K test samples |
-| 📏 **Evaluation** | Symmetric Mean Absolute Percentage Error (SMAPE) |
-| 🥇 **Best Score** | **56.2 SMAPE** using E5 embeddings + ensemble methods |
-| 🚫 **Constraints** | No external price lookup, MIT/Apache 2.0 license, <8B parameters |
-
-## 🏆 Model Performance Comparison
+The solution integrates text embeddings (E5, BERT, SBERT), vision-language models (VILT, FLAVA, CLIP), and ensemble regressors to minimize SMAPE (Symmetric Mean Absolute Percentage Error) on the test set.
 
 <div align="center">
-
-| 🥇 **Model** | 📊 **SMAPE Score** | 📝 **Description** | 🎯 **Status** |
-|--------------|-------------------|-------------------|---------------|
-| **E5 Embeddings + Ensemble** | **56.2** | **Best performing model** | ✅ **Winner** |
-| VILT Model | 57.0 | Vision-Language Transformer | 🥈 Runner-up |
-| BERT Large | 59.3 | BERT Large embeddings | 🥉 Third |
-| SBERT Model | 62.0 | Sentence-BERT embeddings | 4th Place |
-
+🏆 Best Performance: 56.2 SMAPE (E5 Ensemble Pipeline)
+💡 CLIP Multimodal Pipeline: 60 SMAPE on Test Set
 </div>
-
-### 📈 Performance Progression
-```
-SBERT (62.0) → BERT Large (59.3) → VILT (57.0) → E5 Ensemble (56.2)
-     ↓              ↓                ↓              ↓
-  Baseline    +2.7 improvement  +2.3 improvement  +0.8 improvement
-```
-
-## 🛠️ Technical Approach
-
-### 🔤 1. Text Processing & Embeddings
+📊 Challenge Details
+Aspect	Details
+🎯 Objective	Predict product prices using multimodal product data
+📈 Dataset	~75K training samples, 75K test samples
+📏 Metric	Symmetric Mean Absolute Percentage Error (SMAPE)
+🚫 Constraints	No external pricing data, model ≤ 8B params
+🧩 Modalities Used	Text (title, description, IPQ), optional image embeddings
+🏆 Best Result	56.2 SMAPE (E5 Ensemble), 60 SMAPE (CLIP Pipeline)
+🏆 Model Performance Comparison
 <div align="center">
-
-| **Component** | **Technology** | **Purpose** |
-|---------------|----------------|-------------|
-| 🧠 **E5 Embeddings** | Microsoft E5 Model | Semantic text understanding |
-| 📊 **Feature Engineering** | Statistical Analysis | Enhanced text representation |
-| 🔧 **Text Features** | Custom Extraction | Character, word, sentence metrics |
-
+Model / Pipeline	Type	SMAPE Score	Notes
+E5 Ensemble	Text + Statistical Features	56.2	Best performing model
+VILT Pipeline	Vision-Language Transformer	57.0	Multimodal fine-tuning
+BERT Large	Text-only	59.3	Standard transformer
+CLIP Pipeline	Image + Text Multimodal	60.0	Performed well on visual data
+SBERT Baseline	Sentence-BERT	62.0	Text baseline
 </div>
+📈 Performance Progression
+SBERT (62.0) → BERT Large (59.3) → CLIP (60.0) → VILT (57.0) → E5 Ensemble (56.2)
 
-**Extracted Features:**
-- 📝 Character count, word count, average word length
-- 📄 Sentence count, uppercase ratio, digit ratio  
-- 🔤 Special character ratio, unique word ratio
+🧠 Technical Approach
+1️⃣ Text Processing & Feature Engineering
 
-### 🏗️ 2. Model Architecture
+Cleaned and tokenized product text fields (title, description, specs)
+
+Extracted linguistic and statistical features (character count, digit ratio, etc.)
+
+Generated transformer-based embeddings (E5, BERT, SBERT)
+
+2️⃣ Vision + Multimodal Integration
+
+CLIP Pipeline (clip_complete_pipeline.py): Extracted image-text representations via OpenAI CLIP, achieving 60 SMAPE
+
+FLAVA Pipeline (flava_training.py, flava_test.py): Used Facebook FLAVA for unified vision-language embeddings
+
+VILT Pipeline (vilt_pipeline.ipynb): Applied Vision-Language Transformer for early fusion
+
+Normalized, concatenated multimodal features with tabular and text-based engineered features
+
+3️⃣ Ensemble Regression Models
+
+Combined the strengths of multiple gradient boosting models:
+
+XGBoost
+
+LightGBM
+
+CatBoost
+
+Tweedie LGBM
+
+📁 Repository Structure
+smart-product-pricing-multimodal-regression/
+├── 📄 README.md                         # Project documentation (you’re here)
+├── 📜 LICENSE                           # MIT License
+├── 📓 E5_pipeline.ipynb                 # E5 embeddings + ensemble (Best: 56.2 SMAPE)
+├── 📓 vilt_pipeline.ipynb               # Vision-Language Transformer (57.0 SMAPE)
+├── 📓 quantile_regression_and_feature_eng.ipynb  # Text feature analysis and regression
+├── 📓 ensemble_training_nb.ipynb        # K-Fold ensembling workflow
+├── 🧠 bert_and_ensemble_train.py        # BERT + ensemble pipeline
+├── 🧠 clip_complete_pipeline.py         # CLIP multimodal pipeline (60 SMAPE)
+├── 🧠 flava_preprocessing.py            # Data preprocessor for FLAVA model
+├── 🧠 flava_training.py / flava_test.py # FLAVA multimodal training & evaluation
+├── 🧠 sbert_analysis.py / test_sbert_analysis.py  # SBERT experiments
+├── 🧠 text_preprocess_feature_eng.py    # Text preprocessing + feature engineering
+└── 📁 data/ (not included)              # Expected train.csv / test.csv
+
+⚙️ Setup & Execution
+🧩 Installation
+pip install -r requirements.txt
+# or install major dependencies manually:
+pip install transformers sentence-transformers catboost lightgbm xgboost pandas numpy scikit-learn torch torchvision
+
+🚀 Usage
+Step	Command / Notebook	Description
+1️⃣	text_preprocess_feature_eng.py	Generate textual statistical features
+2️⃣	bert_and_ensemble_train.py or E5_pipeline.ipynb	Run text-based training
+3️⃣	clip_complete_pipeline.py	Run multimodal CLIP pipeline
+4️⃣	flava_training.py → flava_test.py	Train/test FLAVA model
+5️⃣	ensemble_training_nb.ipynb	Combine predictions for ensemble results
+📊 Results Summary
 <div align="center">
-
-| **Model** | **Type** | **Key Features** | **Role** |
-|-----------|----------|------------------|----------|
-| 🚀 **XGBoost** | Gradient Boosting | Optimized hyperparameters | Primary predictor |
-| ⚡ **LightGBM** | Fast Boosting | L1 objective, speed | Secondary predictor |
-| 🐱 **CatBoost** | Categorical Boosting | Advanced features | Tertiary predictor |
-| 📊 **Tweedie LGBM** | Specialized | Price distribution modeling | Specialized predictor |
-
+Pipeline	Modality	SMAPE (↓)	Remarks
+E5 Ensemble	Text + Engineered	56.2	Best
+VILT	Vision-Language	57.0	Close second
+CLIP	Image + Text	60.0	Strong multimodal baseline
+BERT Large	Text	59.3	Robust text encoder
+SBERT	Text	62.0	Baseline
 </div>
+🔍 Key Insights
+Finding	Impact	Explanation
+🧠 Textual signals dominate	High	Product titles/descriptions carry most price cues
+🖼️ CLIP generalizes well visually	Medium	60 SMAPE without fine-tuned image labels
+🧩 Multimodal fusion boosts robustness	High	Fusion improved over single-modality baselines
+🎯 E5 embeddings outperform BERT/SBERT	High	Strong semantic capture of pricing semantics
+🔁 Ensembling reduces error variance	Medium	K-Fold + model blending improved generalization
+🔮 Future Work
 
-### 🎯 3. Training Strategy
-```mermaid
-graph TD
-    A[Raw Text Data] --> B[E5 Embeddings]
-    A --> C[Feature Engineering]
-    B --> D[Feature Combination]
-    C --> D
-    D --> E[Log Transformation]
-    E --> F[5-Fold CV]
-    F --> G[4-Model Ensemble]
-    G --> H[Final Predictions]
-```
+Advanced Multimodal Fusion (Late fusion / cross-attention)
 
-## 📁 Project Structure
+Hyperparameter Optimization using Optuna or Ray Tune
 
-```
-🛒 Smart Product Pricing Challenge/
-├── 📄 README.md                           # 📖 Project documentation
-├── 📓 Untitled1.ipynb                     # 🚀 Main E5 ensemble implementation
-├── 📓 BERT_LARGE.ipynb                    # 🧠 BERT Large model (SMAPE: 59.3)
-├── 📓 ml-challenge-vilt.ipynb             # 👁️ VILT model implementation (SMAPE: 57.0)
-├── 🐍 generate_e5_embeddings.py           # 🔧 E5 embeddings generation script
-├── 🧠 train_e5_embeddings.npy            # 🎯 Pre-computed E5 embeddings (training)
-├── 🧠 test_e5_embeddings.npy             # 🎯 Pre-computed E5 embeddings (test)
-├── 📊 submission_kfold_logblend.csv      # 🏆 Final predictions
-└── 📁 [train.csv, test.csv]              # 📈 Dataset files 
-```
+End-to-End Vision-Language Regression
 
-### 🔍 File Descriptions
-| **File** | **Type** | **Description** | **Performance** |
-|----------|----------|-----------------|-----------------|
-| `README.md` | 📖 Documentation | Complete project overview and setup guide | - |
-| `Untitled1.ipynb` | 🚀 Main Code | E5 embeddings + ensemble (best model) | **56.2 SMAPE** |
-| `BERT_LARGE.ipynb` | 🧠 BERT Model | BERT Large embeddings implementation | **59.3 SMAPE** |
-| `ml-challenge-vilt.ipynb` | 👁️ VILT Model | Vision-Language Transformer | **57.0 SMAPE** |
-| `generate_e5_embeddings.py` | 🔧 Script | E5 embeddings generation utility | - |
-| `*_embeddings.npy` | 🧠 Data | Pre-computed E5 embeddings for fast training | - |
-| `submission_*.csv` | 📊 Output | Final predictions in competition format | - |
+Synthetic Data Augmentation for rare product categories
 
-## 🚀 Quick Start
+Deployment via FastAPI + Streamlit dashboard
 
-### 📦 Prerequisites
-```bash
-# Core ML libraries
-pip install catboost xgboost lightgbm
+🏁 Conclusion
 
-# NLP and Transformers
-pip install sentence-transformers transformers
+The project successfully demonstrates that:
 
-# Data processing
-pip install scikit-learn pandas numpy
-```
+Text-based embeddings (E5) provide the strongest standalone performance (56.2 SMAPE)
 
-### 🎯 Usage Steps
-<div align="center">
+CLIP offers competitive multimodal results (60 SMAPE) when integrating visual signals
 
-| **Step** | **Action** | **Description** |
-|----------|------------|-----------------|
-| 1️⃣ | 📁 **Load Data** | Place `train.csv` and `test.csv` in project directory |
-| 2️⃣ | 🧠 **Generate Embeddings** | Run `python generate_e5_embeddings.py` to create E5 embeddings |
-| 3️⃣ | 🚀 **Run Training** | Execute `Untitled1.ipynb` for E5 ensemble (best model) |
-| 4️⃣ | 🔄 **Try Other Models** | Run `BERT_LARGE.ipynb` or `ml-challenge-vilt.ipynb` for comparison |
-| 5️⃣ | 📊 **Generate Predictions** | Output saved as `submission_kfold_logblend.csv` |
-
-</div>
-
-### 💻 Key Code Snippet
-```python
-# 🧠 Load E5 embeddings
-train_embeddings = np.load("train_e5_embeddings.npy")
-test_embeddings = np.load("test_e5_embeddings.npy")
-
-# 🔗 Combine with engineered features
-train_features = pd.concat([train_embedding_df, train_df[feature_cols]], axis=1)
-
-# 🎯 K-Fold ensemble training
-models = {
-    "XGBoost": XGBRegressor(n_estimators=2000, learning_rate=0.03, ...),
-    "LightGBM": LGBMRegressor(n_estimators=2000, objective="regression_l1", ...),
-    "CatBoost": CatBoostRegressor(iterations=2000, depth=10, ...),
-    "Tweedie": LGBMRegressor(objective="tweedie", tweedie_variance_power=1.5, ...)
-}
-```
-
-## 🔧 Model Configuration
+The combination of ensemble methods and multimodal fusion leads to robust generalization across diverse product types
 
 <div align="center">
+🚀 "Smart Product Pricing – where language meets vision for value prediction."
 
-| **Model** | **Key Parameters** | **Optimization** |
-|-----------|-------------------|------------------|
-| 🚀 **XGBoost** | `n_estimators: 2000`, `learning_rate: 0.03`, `max_depth: 6` | `reg_alpha: 2.0`, `reg_lambda: 4.0` |
-| ⚡ **LightGBM** | `n_estimators: 2000`, `learning_rate: 0.03`, `num_leaves: 128` | `objective: "regression_l1"` |
-| 🐱 **CatBoost** | `iterations: 2000`, `depth: 10`, `learning_rate: 0.02` | `loss_function: "RMSE"` |
-| 📊 **Tweedie LGBM** | `n_estimators: 2000`, `learning_rate: 0.03` | `tweedie_variance_power: 1.5` |
-
-</div>
-
-## 📈 Results Analysis
-
-<div align="center">
-
-| **Metric** | **Value** | **Description** |
-|------------|-----------|-----------------|
-| 🎯 **Final OOF SMAPE** | **56.2** | On original price scale |
-| ⏱️ **Training Time** | ~4 hours | 5-fold cross-validation |
-| 📊 **Feature Dimensions** | 1024+ | E5 embeddings + engineered features |
-| 🎲 **Ensemble Strategy** | Mean | 4 model predictions |
-
-</div>
-
-### 📊 Performance Breakdown
-```
-🏆 Best Model: E5 Embeddings + Ensemble
-📈 SMAPE Score: 56.2
-⏱️ Training Time: ~4 hours
-🎯 Cross-Validation: 5-fold
-🔧 Models Used: 4 (XGBoost, LightGBM, CatBoost, Tweedie)
-```
-
-## 🎯 Key Insights
-
-<div align="center">
-
-| **Insight** | **Impact** | **Evidence** |
-|-------------|------------|--------------|
-| 🧠 **E5 Embeddings Superiority** | High | 56.2 vs 57.0 (VILT) vs 59.3 (BERT) vs 62.0 (SBERT) |
-| 🎲 **Ensemble Benefits** | Medium | Reduced variance through model diversity |
-| 📊 **Log Transformation** | Critical | Handled price distribution skewness |
-| 🔧 **Feature Engineering** | High | Statistical features complemented embeddings |
-| 🏆 **Model Progression** | High | Clear improvement from SBERT → BERT → VILT → E5 |
-
-</div>
-
-## 🔮 Future Improvements
-
-<div align="center">
-
-| **Improvement** | **Potential Impact** | **Implementation** |
-|-----------------|---------------------|-------------------|
-| 🖼️ **Image Features** | High | Vision models for product images |
-| 🧠 **Advanced Ensembling** | Medium | Neural network stacking |
-| ⚙️ **Hyperparameter Optimization** | Medium | Bayesian optimization |
-| 🎯 **Feature Selection** | Low | Advanced selection techniques |
-| 📈 **Data Augmentation** | Medium | Synthetic data generation |
-
-</div>
-
-## 📝 Methodology Summary
-
-```mermaid
-graph LR
-    A[📊 Raw Data] --> B[🧹 Preprocessing]
-    B --> C[🧠 E5 Embeddings]
-    B --> D[🔧 Feature Engineering]
-    C --> E[🔗 Feature Combination]
-    D --> E
-    E --> F[📊 Log Transformation]
-    F --> G[🎯 K-Fold Training]
-    G --> H[🎲 Ensemble Models]
-    H --> I[📈 Final Predictions]
-```
-
-## 🏅 Competition Compliance
-
-<div align="center">
-
-| **Requirement** | **Status** | **Details** |
-|-----------------|------------|-------------|
-| 🚫 **No External Data** | ✅ **Compliant** | Used only provided training data |
-| 📄 **MIT/Apache License** | ✅ **Compliant** | All models meet license requirements |
-| 🔢 **Parameter Limit** | ✅ **Compliant** | All models under 8B parameters |
-| 📊 **Output Format** | ✅ **Compliant** | Exact CSV format matching requirements |
-
-</div>
-
----
-
-<div align="center">
-
-## 🚀 **Ready to Deploy**
-
-*This solution achieved **56.2 SMAPE** using state-of-the-art E5 embeddings and ensemble methods*
-
-
-
-
+Best Result: 56.2 SMAPE (E5 Ensemble)
+CLIP Multimodal Pipeline: 60 SMAPE (Test Set)
 
 </div>
